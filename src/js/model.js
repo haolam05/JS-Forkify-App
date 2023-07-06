@@ -38,7 +38,7 @@ export const loadSearchResults = async function (query) {
         id: recipe.id,
         title: recipe.title,
         publisher: recipe.publisher,
-        sourceUrl: recipe.image_url,
+        image: recipe.image_url,
       };
     });
   } catch (err) {
