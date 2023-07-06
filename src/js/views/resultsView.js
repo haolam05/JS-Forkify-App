@@ -1,5 +1,4 @@
 import View from './view';
-import icons from 'url:../../img/icons.svg';
 
 class resultsView extends View {
   _parentEl = document.querySelector('.results');
