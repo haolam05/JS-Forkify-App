@@ -1,30 +1,12 @@
 import View from './view';
+import previewView from './previewView';
 
 class resultsView extends View {
   _parentEl = document.querySelector('.results');
   _errorMsg = 'No recipes found for your query! Please try again!';
 
   _generateHtml() {
-    return this._data.map(this._generateHtmlPreview).join('');
-  }
-
-  _generateHtmlPreview(d) {
-    const recipeID = window.location.hash.slice(1);
-    return `
-      <li class="preview">
-        <a class="preview__link ${
-          d.id === recipeID ? 'preview__link--active' : ''
-        }" href="#${d.id}">
-          <figure class="preview__fig">
-            <img src="${d.image}" alt="${d.title}" />
-          </figure>
-          <div class="preview__data">
-            <h4 class="preview__title">${d.title}</h4>
-            <p class="preview__publisher">${d.publisher}</p>
-          </div>
-        </a>
-      </li>
-    `;
+    return this._data.map(d => previewView.render(d, false)).join('');
   }
 }
 
