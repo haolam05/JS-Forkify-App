@@ -9,9 +9,12 @@ class resultsView extends View {
   }
 
   _generateHtmlPreview(d) {
+    const recipeID = window.location.hash.slice(1);
     return `
       <li class="preview">
-        <a class="preview__link" href="#${d.id}">
+        <a class="preview__link ${
+          d.id === recipeID ? 'preview__link--active' : ''
+        }" href="#${d.id}">
           <figure class="preview__fig">
             <img src="${d.image}" alt="${d.title}" />
           </figure>

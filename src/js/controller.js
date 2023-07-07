@@ -20,6 +20,9 @@ const controlRecipes = async function () {
 
     // 4) Render recipe
     recipeView.render(model.state.recipe);
+
+    // 5) Update results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage());
   } catch (err) {
     recipeView.renderError();
   }
@@ -60,7 +63,7 @@ const controlServings = function (newServings) {
   model.updateServings(newServings);
 
   // 2) Update the recipe view
-  recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
 };
 
 const init = function () {
