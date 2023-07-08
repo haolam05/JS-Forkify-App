@@ -1,5 +1,5 @@
 import { API_URL, RES_PER_PAGE, API_KEY } from './config.js';
-import { apiCall } from './helpers.js';
+import { AJAX } from './helpers.js';
 
 export const state = {
   recipe: {},
@@ -14,9 +14,9 @@ export const state = {
 
 export const loadRecipe = async function (recipeID) {
   try {
-    const data = await apiCall({ url: `${API_URL}/${recipeID}` });
+    const data = await AJAX(`${API_URL}/${recipeID}`);
     state.recipe = createRecipeObject(data);
-    state.recipe.bookmarked = state.bookmarks.some(bR => bR.id === recipe.id);
+    state.recipe.bookmarked = state.bookmarks.some(bR => bR.id === recipeID);
   } catch (err) {
     throw err;
   }
@@ -24,8 +24,7 @@ export const loadRecipe = async function (recipeID) {
 
 export const loadSearchResults = async function (query) {
   try {
-    const data = await apiCall({ url: `${API_URL}?search=${query}` });
-
+    const data = await AJAX(`${API_URL}?search=${query}`);
     state.search.query = query;
     state.search.page = 1;
     state.search.results = data.data.recipes.map(recipe => {
@@ -70,8 +69,6 @@ export const delBookmark = function (id) {
 
 export const uploadRecipe = async function (newRecipe) {
   try {
-    console.log(newRecipe);
-
     const ingredients = Object.entries(newRecipe)
       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
       .map(ing => {
@@ -94,14 +91,7 @@ export const uploadRecipe = async function (newRecipe) {
       ingredients,
     };
 
-    const data = await apiCall(
-      {
-        url: `${API_URL}?key=${API_KEY}`,
-        uploadData: recipe,
-      },
-      true
-    );
-
+    const data = await AJAX(`${API_URL}?key=${API_KEY}`, recipe);
     state.recipe = createRecipeObject(data);
     addBookmark(state.recipe);
   } catch (err) {

@@ -1,8 +1,16 @@
 import { TIMEOUT_SEC } from './config.js';
 
-export const apiCall = async function (dataObj, isSend = false) {
+export const AJAX = async function (url, uploadData = undefined) {
   try {
-    const fetchPromise = getFetchPromise(dataObj, isSend);
+    const fetchPromise = uploadData
+      ? fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(uploadData),
+        })
+      : fetch(url);
     const res = await Promise.race([fetchPromise, timeout(TIMEOUT_SEC)]);
     const data = await res.json();
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
@@ -17,16 +25,5 @@ const timeout = function (s) {
     setTimeout(function () {
       reject(new Error(`Request took too long! Timeout after ${s} second`));
     }, s * 1000);
-  });
-};
-
-const getFetchPromise = function (data, isSend = false) {
-  if (!isSend) return fetch(data.url);
-  return fetch(data.url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data.uploadData),
   });
 };
