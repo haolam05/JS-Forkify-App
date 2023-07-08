@@ -2,6 +2,7 @@ import View from './view';
 
 class addRecipeView extends View {
   _parentEl = document.querySelector('.upload');
+  _successMsg = 'Recipe was successfully uploaded :)';
   _window = document.querySelector('.add-recipe-window');
   _overlay = document.querySelector('.overlay');
   _btnOpen = document.querySelector('.nav__btn--add-recipe');
@@ -22,21 +23,19 @@ class addRecipeView extends View {
     });
   }
 
-  _addHandlerShowWindow() {
-    this._btnOpen.addEventListener('click', this._toggleWindow.bind(this));
-  }
-
-  _addHandlerHideWindow() {
-    this._btnClose.addEventListener('click', this._toggleWindow.bind(this));
-    this._overlay.addEventListener('click', this._toggleWindow.bind(this));
-  }
-
-  _toggleWindow() {
+  toggleWindow() {
     this._overlay.classList.toggle('hidden');
     this._window.classList.toggle('hidden');
   }
 
-  _generateHtml() {}
+  _addHandlerShowWindow() {
+    this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
+  }
+
+  _addHandlerHideWindow() {
+    this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
+    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+  }
 }
 
 export default new addRecipeView();
